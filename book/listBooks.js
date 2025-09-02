@@ -1,7 +1,7 @@
 const { readData }= require("./dataManager");
 
 function listBooks(req, res) {
-   const { page, limit } = req.query;
+   const { page, limit, sortBy } = req.query;
    
    if((!page || isNaN(parseInt(page))) || (!limit || isNaN(parseInt(limit)))) {
       return res.status(400).send('Parâmetros inválidos. Página e limite devem ser números.');
@@ -20,6 +20,7 @@ function listBooks(req, res) {
       return res.status(400).send('Número de página muito alto.');
    }
 
+   sortBooks(books, sortBy);
    const paginatedBooks = books.slice(startIndex, endIndex);
 
    return res
@@ -31,6 +32,20 @@ function listBooks(req, res) {
          Ano: ${ book.year }
          Gênero: ${ book.genre } 
       `).join('\n'));
+}
+
+function sortBooks(books, sortBy) {
+   const validSorts = ['title', 'author', 'year', 'genre'];
+
+   if(!validSorts.includes(sortBy)) {
+      return books;
+   }
+
+   return books.sort((a, b) => {
+      if(a[sortBy] < b[sortBy]) return -1;
+      if(a[sortBy] > b[sortBy]) return 1;
+      return 0;
+   });
 }
 
 module.exports = listBooks;
