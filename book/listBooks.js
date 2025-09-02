@@ -35,7 +35,7 @@ function listBooks(req, res) {
 }
 
 function sortBooks(books, sortBy) {
-   const validSorts = ['title', 'author', 'year', 'genre'];
+   const validSorts = ['id', 'title', 'author', 'year', 'genre'];
 
    if(!validSorts.includes(sortBy)) {
       return books;
