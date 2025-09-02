@@ -1,4 +1,4 @@
-const { readData, writeData }= require("./dataManager");
+const { readData, writeData } = require("./dataManager");
 
 const updateBook = (req, res) => {
    const { id } = req.params;

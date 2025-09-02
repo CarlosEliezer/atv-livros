@@ -1,4 +1,4 @@
-const { readData }= require("./dataManager");
+const { readData } = require("./dataManager");
 
 function listBooks(req, res) {
    const { page, limit, sortBy } = req.query;
