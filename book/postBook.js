@@ -1,5 +1,4 @@
-const fs = require('fs');
-const path = require('path');
+const { readData, writeData } = require("./dataManager");
 
 function postBook(req, res) {
    if(!validateBook(req)) {
@@ -18,16 +17,16 @@ function postBook(req, res) {
       genre: req.body.genre
    }
 
-   const filePath = path.join(__dirname, '..', '/book/data.json');
+   const books = readData();
+   console.log(books);
 
-   if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, `[\n ${ JSON.stringify(newBook) } \n]`);
+   if (!books) {
+      writeData([newBook]);
       return res.status(201).send('Livro salvo com sucesso!');
    } 
 
-   let books = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
    books.push(newBook);
-   fs.writeFileSync(filePath, `[\n ${ books.map(book => JSON.stringify(book)).join(',\n ') } \n]`);
+   writeData(books);
    return res.status(201).send('Livro salvo com sucesso!');
 }
 
