@@ -9,7 +9,7 @@ const updateBook = require('./updateBook');
 
 router.post('/book', postBook);
 router.get('/book/:id', getBookById);
-router.put('/book/:id/:target', updateBook);
+router.put('/book/:id', updateBook);
 router.delete('/book/:id', deleteBook);
 router.get('/books', listBooks)
 

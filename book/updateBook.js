@@ -2,21 +2,27 @@ const fs = require('fs');
 const path = require('path');
 
 const updateBook = (req, res) => {
-   const { id, target } = req.params;
+   const { id } = req.params;
 
-   if(!id || id.trim() === '' || !target || target.trim() === '') {
+   if(!id || id.trim() === '') {
       return res.status(400).send('ID ou campo alvo não fornecido.');
    }
 
-   if(!req.body || req.body[target] === undefined) {
+   if(!req.body || !req.body.target || req.body.target.trim() === '') {
       return res.status(400).send('Novo valor não fornecido.');
+   }
+
+   const validTargets = ['title', 'author', 'year', 'genre'];
+   const target = req.body.target;
+   if(!validTargets.includes(target)) {
+      return res.status(400).send('Campo alvo inválido. Use title, author, year ou genre.');
    }
 
    const filePath = path.join(__dirname, '..', '/book/data.json');
    if (!fs.existsSync(filePath)) {
       return res.status(404).send('Nenhum livro cadastrado.');
    }
-
+   
    let books = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
    if(books.length === 0) {
       return res.status(404).send('Nenhum livro cadastrado.');
